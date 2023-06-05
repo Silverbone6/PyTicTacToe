@@ -1,179 +1,122 @@
 from os import system, name
 
-x = 0
-win = 0
-board = [
-    ['#', '#', '#'],
-    ['#', '#', '#'],
-    ['#', '#', '#']
-]
+empty = "#"
+key1 = "x"
+key2 = "O"
+win = False
+board = [[empty, empty, empty], [empty, empty, empty], [empty, empty, empty]]
+coordinates = {
+    "a1": [0, 0],
+    "a2": [1, 0],
+    "a3": [2, 0],
+    "b1": [0, 1],
+    "b2": [1, 1],
+    "b3": [2, 1],
+    "c1": [0, 2],
+    "c2": [1, 2],
+    "c3": [2, 2],
+}
 
 
 def clear():
-    if name == 'nt':
-        _ = system('cls')
+    if name == "nt":
+        _ = system("cls")
+
+
+def press_enter():
+    input("Press ENTER to continue")
 
 
 def game_board():
     # El tablero se configura acá
-    print('Tic Tac Toe')
-    print('  1 2 3')
-    print('A', board[0][0], board[0][1], board[0][2])
-    print('B', board[1][0], board[1][1], board[1][2])
-    print('C', board[2][0], board[2][1], board[2][2])
-    print('Please insert a coordinate between a1 and c3')
+    print("Tic Tac Toe")
+    print("  A B C")
+    print("1", board[0][0], board[0][1], board[0][2])
+    print("2", board[1][0], board[1][1], board[1][2])
+    print("3", board[2][0], board[2][1], board[2][2])
+
+
+def win_check():
+    global win
+    x = 0
+    y = 0
+    for i in board:
+        if board[x][0] == key1 and board[x][1] == key1 and board[x][2] == key1:
+            win = True
+            print("Player One wins by row")
+        elif board[x][0] == key2 and board[x][1] == key2 and board[x][2] == key2:
+            win = True
+            print("Player Two wins by row")
+        x += 1
+    for i in board:
+        if board[0][y] == key1 and board[1][y] == key1 and board[2][y] == key1:
+            win = True
+            print("Player One wins by column")
+        elif board[0][y] == key2 and board[1][y] == key2 and board[2][y] == key2:
+            win = True
+            print("Player Two wins by column")
+        y += 1
+    if board[0][0] == key1 and board[1][1] == key1 and board[2][2] == key1:
+        win = True
+        print("Player One wins by y=-x")
+    elif board[0][0] == key2 and board[1][1] == key2 and board[2][2] == key2:
+        win = True
+        print("Player Two wins by y=-x")
+    elif board[0][2] == key1 and board[1][1] == key1 and board[2][0] == key1:
+        win = True
+        print("Player One wins by y=x")
+    elif board[0][2] == key2 and board[1][1] == key2 and board[2][0] == key2:
+        win = True
+        print("Player Two wins by y=x")
 
 
 def game_instance():
-    global win
-    rep1 = True
-    game_board()
-    p = input('PLAYER ONE>')
-    key = 'x'
-    if p == 'a1' and board[0][0] == '#':
-        board[0][0] = key
-    elif p == 'a2' and board[0][1] == '#':
-        board[0][1] = key
-    elif p == 'a3' and board[0][2] == '#':
-        board[0][2] = key
-    elif p == 'b1' and board[1][0] == '#':
-        board[1][0] = key
-    elif p == 'b2' and board[1][1] == '#':
-        board[1][1] = key
-    elif p == 'b3' and board[1][2] == '#':
-        board[1][2] = key
-    elif p == 'c1' and board[2][0] == '#':
-        board[2][0] = key
-    elif p == 'c2' and board[2][1] == '#':
-        board[2][1] = key
-    elif p == 'c3' and board[2][2] == '#':
-        board[2][2] = key
-    elif p == 'dou':
-        board[0][0] = key
-        board[0][1] = key
-        board[0][2] = key
-    else:
-        clear()
-        print('''
-Please insert a valid coordinate between a1 - c3
-Press ENTER to continue''')
-        input()
-    # Verificar si gana
-    if board[0][0] == board[0][1] == board[0][2] == key:
-        win = 1
-        rep1 = False
-    if board[1][0] == board[1][1] == board[1][2] == key:
-        win = 1
-        rep1 = False
-    if board[2][2] == board[2][1] == board[2][2] == key:
-        win = 1
-        rep1 = False
-    if board[0][0] == board[1][0] == board[2][0] == key:
-        win = 1
-        rep1 = False
-    if board[0][1] == board[1][1] == board[2][1] == key:
-        win = 1
-        rep1 = False
-    if board[0][2] == board[1][2] == board[2][2] == key:
-        win = 1
-        rep1 = False
-    if board[0][0] == board[1][1] == board[2][2] == key:
-        win = 1
-        rep1 = False
-    if board[2][0] == board[1][1] == board[0][2] == key:
-        win = 1
-        rep1 = False
-
-    # Sección del segundo jugador
-    if win == 0:
-        game_board()
-        p = input('PLAYER TWO>')
-        key = 'o'
-        if p == 'a1' and board[0][0] == '#':
-            board[0][0] = key
-        elif p == 'a2' and board[0][1] == '#':
-            board[0][1] = key
-        elif p == 'a3' and board[0][2] == '#':
-            board[0][2] = key
-        elif p == 'b1' and board[1][0] == '#':
-            board[1][0] = key
-        elif p == 'b2' and board[1][1] == '#':
-            board[1][1] = key
-        elif p == 'b3' and board[1][2] == '#':
-            board[1][2] = key
-        elif p == 'c1' and board[2][0] == '#':
-            board[2][0] = key
-        elif p == 'c2' and board[2][1] == '#':
-            board[2][1] = key
-        elif p == 'c3' and board[2][2] == '#':
-            board[2][2] = key
-        elif p == 'dou':
-            board[0][0] = key
-            board[0][1] = key
-            board[0][2] = key
-        else:
-            clear()
-            print('''
-        Please insert a valid coordinate between a1 - c3
-        Press ENTER to continue''')
-            rep1 = True
-            input()
-        # Verificar si gana
-        key = 'o'
-        if board[0][0] == board[0][1] == board[0][2] == key:
-            win = 1
-            rep1 = False
-        elif board[1][0] == board[1][1] == board[1][2] == key:
-            win = 1
-            rep1 = False
-        elif board[2][2] == board[2][1] == board[2][2] == key:
-            win = 1
-            rep1 = False
-        elif board[0][0] == board[1][0] == board[2][0] == key:
-            win = 1
-            rep1 = False
-        elif board[0][1] == board[1][1] == board[2][1] == key:
-            win = 1
-            rep1 = False
-        elif board[0][2] == board[1][2] == board[2][2] == key:
-            win = 1
-            rep1 = False
-        elif board[0][0] == board[1][1] == board[2][2] == key:
-            win = 1
-            rep1 = False
-        elif board[2][0] == board[1][1] == board[0][2] == key:
-            win = 1
-            rep1 = False
-        else:
-            game_instance()
-        if win == 1:
-            clear()
-            print('Player Two Wins')
-    else:
-        clear()
-        print('Player One Wins')
-
-
-def main():
-    rep = True
     clear()
-    print("Welcome to the Console-based Tic Tac Toe!")
-    print("Ready to win? type 1 to begin, type 0 to exit")
-    act = input('>')
-    if int(act) == 1:
-        game_instance()
-        main()
-    elif int(act) == 0:
-        rep = False
-    else:
+    while win == False:
+        move1_done = False
+        move2_done = False
+        while move1_done == False:
+            game_board()
+            # player 1 instance
+            print("Please insert a coordinate between a1 and c3")
+            p = input("Player One>")
+            c = coordinates[p]
+            if board[c[0]][c[1]] == empty:
+                board[c[0]][c[1]] = key1
+                move1_done = True
+            elif board[c[0]][c[1]] == key2:
+                print("The selected coordinate is already taken")
+                press_enter()
+                clear()
+                continue
+            else:
+                print("Please insert a valid coordinate")
+                press_enter()
+                clear()
         clear()
-        print('Insert a valid number, 0 or 1')
+        win_check()
+        if win == False:
+            while move2_done == False:
+                game_board()
+                # player 2 instance
+                print("Please insert a coordinate between a1 and c3")
+                p = input("Player Two>")
+                c = coordinates[p]
+                if board[c[0]][c[1]] == empty:
+                    board[c[0]][c[1]] = key2
+                    move2_done = True
+                elif board[c[0]][c[1]] == key1:
+                    print("The selected coordinate is already taken")
+                    press_enter()
+                    clear()
+                    continue
+                else:
+                    print("Please insert a valid coordinate")
+                    press_enter()
+                    clear()
+                clear()
+                win_check()
 
 
-main()
-print('''
-Thanks for playing Tic Tac Toe
-Developed by Marcos Villena
-Press ENTER to exit
-''')
-input()
+game_instance()
+game_board()
